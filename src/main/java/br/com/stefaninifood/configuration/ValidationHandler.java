@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestControllerAdvice
 public class ValidationHandler {
@@ -29,6 +32,22 @@ public class ValidationHandler {
         fieldErrors.forEach(e -> {
             String mensagem = messageSource.getMessage(e, LocaleContextHolder.getLocale());
             FormErrorDto erro = new FormErrorDto(e.getField(), mensagem);
+            erros.add(erro);
+        });
+
+        return erros;
+    }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public List<FormErrorDto> handle(ConstraintViolationException exception) {
+        System.out.println("Chegou");
+        List<FormErrorDto> erros = new ArrayList<>();
+
+        Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
+
+        violations.forEach(v -> {
+            FormErrorDto erro = new FormErrorDto(v.getPropertyPath().toString(), v.getMessage());
             erros.add(erro);
         });
 

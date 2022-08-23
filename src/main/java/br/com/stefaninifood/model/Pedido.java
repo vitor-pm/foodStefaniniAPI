@@ -3,6 +3,7 @@ package br.com.stefaninifood.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Pedido {
@@ -14,11 +15,15 @@ public class Pedido {
     @ManyToOne
     private Cliente cliente;
     @ManyToOne
-    @JsonIgnoreProperties(value = "pedidos")
+    @JsonIgnoreProperties({"pedidos", "produtos"})
     private Loja loja;
     private String descricao;
     private String status;
     private double valor;
+
+    @OneToMany
+    @JsonIgnoreProperties(value = "lojas")
+    private List<Produto> produtos;
 
     public Loja getLoja() {
         return loja;
@@ -66,5 +71,13 @@ public class Pedido {
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
     }
 }

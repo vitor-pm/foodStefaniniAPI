@@ -1,6 +1,7 @@
 package br.com.stefaninifood.controller;
 
 import br.com.stefaninifood.model.Loja;
+import br.com.stefaninifood.model.dto.LojaDto;
 import br.com.stefaninifood.repository.LojaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +21,18 @@ public class LojaController {
     private LojaRepository repository;
 
     @GetMapping()
-    public ResponseEntity<List<Loja>> getAll(@RequestParam(required = false) String nome){
+    public ResponseEntity<List<?>> getAll(@RequestParam(required = false) String nome){
+        List<LojaDto> lojas = new ArrayList<>();
+
         if (nome == null) {
-            return ResponseEntity.ok(repository.findAll());
+            List<Loja> LojasBanco = repository.findAll();
+            LojasBanco.forEach(l -> lojas.add(new LojaDto(l)));
+
+            return ResponseEntity.ok(lojas);
         }
+        List<Loja> LojasBanco = repository.findByNomeContaining(nome);
+        LojasBanco.forEach(l -> lojas.add(new LojaDto(l)));
+
         return ResponseEntity.ok(repository.findByNomeContaining(nome));
     }
 

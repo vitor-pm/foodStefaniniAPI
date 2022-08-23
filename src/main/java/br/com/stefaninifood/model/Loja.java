@@ -31,6 +31,11 @@ public class Loja {
     @JsonIgnoreProperties("loja")
     private List<Pedido> pedidos;
 
+    //TODO relacionar com produtos
+    @ManyToMany(mappedBy = "lojas")
+    @JsonIgnoreProperties(value = "lojas")
+    private List<Produto> produtos;
+
     public int getId() {
         return id;
     }
@@ -77,5 +82,13 @@ public class Loja {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
     }
 }
