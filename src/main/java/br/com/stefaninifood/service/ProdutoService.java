@@ -5,12 +5,12 @@ import br.com.stefaninifood.model.dto.ProdutoDetalharDTO;
 import br.com.stefaninifood.model.dto.ProdutoDto;
 import br.com.stefaninifood.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,19 +19,14 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository repository;
 
-    public ResponseEntity<List<?>> getAllProdutos(String nome) {
-        List<ProdutoDto> produtos = new ArrayList<>();
-
+    public ResponseEntity<Page<?>> getAllProdutos(String nome, Pageable paginacao) {
         if (nome == null) {
-            List<Produto> produtosBanco = repository.findAll();
-            produtosBanco.forEach(p -> produtos.add(new ProdutoDto(p)));
+            Page<Produto> produtosBanco = repository.findAll(paginacao);
 
-            return ResponseEntity.ok(produtos);
+            return ResponseEntity.ok(ProdutoDto.converter(produtosBanco));
         }
 
-        repository.findByNomeContaining(nome).forEach(p -> produtos.add(new ProdutoDto(p)));
-
-        return ResponseEntity.ok(repository.findByNomeContaining(nome));
+        return ResponseEntity.ok(repository.findByNomeContaining(nome, paginacao));
     }
 
     public ResponseEntity<ProdutoDetalharDTO> getProdutoById(int id) {

@@ -3,11 +3,12 @@ package br.com.stefaninifood.service;
 import br.com.stefaninifood.model.Cliente;
 import br.com.stefaninifood.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,11 +17,12 @@ public class ClienteService {
     @Autowired
     private ClienteRepository repository;
 
-    public ResponseEntity<List<Cliente>> getAllClientes(String nome) {
+    public ResponseEntity<Page<Cliente>> getAllClientes(String nome, Pageable paginacao) {
+        System.out.println(paginacao);
         if (nome == null) {
-            return ResponseEntity.ok(repository.findAll());
+            return ResponseEntity.ok(repository.findAll(paginacao));
         }
-        return ResponseEntity.ok(repository.findByNomeContaining(nome));
+        return ResponseEntity.ok(repository.findByNomeContaining(nome, paginacao));
     }
 
     public ResponseEntity<Cliente> getClienteById(int id) {

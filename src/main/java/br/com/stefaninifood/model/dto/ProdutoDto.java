@@ -1,6 +1,7 @@
 package br.com.stefaninifood.model.dto;
 
 import br.com.stefaninifood.model.Produto;
+import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -32,6 +33,10 @@ public class ProdutoDto implements Serializable {
         this.preco = p.getPreco();
         this.lojas = new ArrayList<>();
         p.getLojas().forEach(l -> this.lojas.add(l.getNome()));
+    }
+
+    public static Page<ProdutoDto> converter(Page<Produto> produtos) {
+        return produtos.map(ProdutoDto::new);
     }
 
     public int getId() {

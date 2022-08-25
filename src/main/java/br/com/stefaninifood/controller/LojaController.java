@@ -3,11 +3,12 @@ package br.com.stefaninifood.controller;
 import br.com.stefaninifood.model.Loja;
 import br.com.stefaninifood.service.LojaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/loja")
@@ -16,8 +17,9 @@ public class LojaController {
     private LojaService service;
 
     @GetMapping()
-    public ResponseEntity<List<?>> getAll(@RequestParam(required = false) String nome) {
-        return service.getAllLojas(nome);
+    public ResponseEntity<Page<?>> getAll(@RequestParam(required = false) String nome,
+                                          Pageable paginacao) {
+        return service.getAllLojas(nome, paginacao);
     }
 
     @GetMapping("/detalhar/{id}")

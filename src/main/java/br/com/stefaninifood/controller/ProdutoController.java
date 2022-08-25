@@ -4,11 +4,12 @@ import br.com.stefaninifood.model.Produto;
 import br.com.stefaninifood.model.dto.ProdutoDetalharDTO;
 import br.com.stefaninifood.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/produto")
@@ -18,8 +19,9 @@ public class ProdutoController {
     private ProdutoService service;
 
     @GetMapping()
-    public ResponseEntity<List<?>> getAll(@RequestParam(required = false) String nome) {
-        return service.getAllProdutos(nome);
+    public ResponseEntity<Page<?>> getAll(@RequestParam(required = false) String nome,
+                                          Pageable paginacao) {
+        return service.getAllProdutos(nome, paginacao);
     }
 
     @GetMapping("/detalhar/{id}")
