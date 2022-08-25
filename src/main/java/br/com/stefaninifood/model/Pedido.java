@@ -21,7 +21,7 @@ public class Pedido {
     private String status;
     private double valor;
 
-    @OneToMany
+    @ManyToMany
     @JsonIgnoreProperties(value = "lojas")
     private List<Produto> produtos;
 

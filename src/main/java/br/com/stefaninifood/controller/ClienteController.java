@@ -3,6 +3,8 @@ package br.com.stefaninifood.controller;
 import br.com.stefaninifood.model.Cliente;
 import br.com.stefaninifood.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ public class ClienteController {
     private ClienteService service;
 
     @GetMapping()
+    @Cacheable(value = "listaClientes")
     public ResponseEntity<Page<Cliente>> getAll(@RequestParam(required = false) String nome,
                                                 Pageable paginacao) {
         System.out.println(paginacao);
@@ -29,17 +32,20 @@ public class ClienteController {
     }
 
     @PostMapping
+    @CacheEvict(value = "listaClientes", allEntries = true)
     public ResponseEntity<Cliente> postCliente(@RequestBody @Valid Cliente cliente) {
         return service.insertCliente(cliente);
     }
 
     @PutMapping
+    @CacheEvict(value = "listaClientes", allEntries = true)
     public ResponseEntity<Cliente> putCliente(@RequestBody @Valid Cliente cliente) {
         return service.updateCliente(cliente);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteCliente(@PathVariable int id) {
+    @CacheEvict(value = "listaClientes", allEntries = true)
+    public ResponseEntity<?> deleteCliente(@PathVariable int id) {
         return service.deleteCliente(id);
     }
 }
