@@ -31,8 +31,12 @@ public class Loja {
     @JsonIgnoreProperties("loja")
     private List<Pedido> pedidos;
 
-    //TODO relacionar com produtos
-    @ManyToMany(mappedBy = "lojas")
+    @ManyToMany()
+    @JoinTable(
+            name = "loja_tem",
+            joinColumns = @JoinColumn(name = "loja_id"),
+            inverseJoinColumns = @JoinColumn(name = "produto_id")
+    )
     @JsonIgnoreProperties(value = "lojas")
     private List<Produto> produtos;
 
