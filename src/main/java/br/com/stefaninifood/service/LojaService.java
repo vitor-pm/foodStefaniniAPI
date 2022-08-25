@@ -33,6 +33,11 @@ public class LojaService {
         return ResponseEntity.ok(repository.findByNomeContaining(nome));
     }
 
+    public ResponseEntity<Loja> getLojaById(int id) {
+        Optional<Loja> loja = repository.findById(id);
+        return loja.map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
     public ResponseEntity<Loja> insertLoja(Loja loja) {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(loja));
     }

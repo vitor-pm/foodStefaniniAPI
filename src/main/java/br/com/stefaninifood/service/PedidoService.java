@@ -24,6 +24,11 @@ public class PedidoService {
         return ResponseEntity.ok(repository.findByCliente_Nome(cliente));
     }
 
+    public ResponseEntity<Pedido> getPedidoById(int id) {
+        Optional<Pedido> pedido = repository.findById(id);
+        return pedido.map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
     public ResponseEntity<Pedido> insertPedido(Pedido pedido) {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(pedido));
     }

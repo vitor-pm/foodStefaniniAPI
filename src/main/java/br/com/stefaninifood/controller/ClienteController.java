@@ -20,6 +20,11 @@ public class ClienteController {
         return service.getAllClientes(nome);
     }
 
+    @GetMapping("/detalhar/{id}")
+    public ResponseEntity<Cliente> getById(@PathVariable int id) {
+        return service.getClienteById(id);
+    }
+
     @PostMapping
     public ResponseEntity<Cliente> postCliente(@RequestBody @Valid Cliente cliente) {
         return service.insertCliente(cliente);

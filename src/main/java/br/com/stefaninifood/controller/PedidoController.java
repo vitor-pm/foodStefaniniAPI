@@ -21,6 +21,11 @@ public class PedidoController {
         return service.getAllPedidos(cliente);
     }
 
+    @GetMapping("/detalhar/{id}")
+    public ResponseEntity<Pedido> getById(@PathVariable int id) {
+        return service.getPedidoById(id);
+    }
+
     @PostMapping
     public ResponseEntity<Pedido> postPedido(@RequestBody Pedido pedido) {
         return service.insertPedido(pedido);

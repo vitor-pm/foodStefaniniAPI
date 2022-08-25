@@ -20,6 +20,11 @@ public class LojaController {
         return service.getAllLojas(nome);
     }
 
+    @GetMapping("/detalhar/{id}")
+    public ResponseEntity<Loja> getById(@PathVariable int id) {
+        return service.getLojaById(id);
+    }
+
     @PostMapping
     public ResponseEntity<Loja> postLoja(@RequestBody Loja loja) {
         return service.insertLoja(loja);

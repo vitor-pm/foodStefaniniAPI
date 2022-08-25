@@ -1,6 +1,7 @@
 package br.com.stefaninifood.controller;
 
 import br.com.stefaninifood.model.Produto;
+import br.com.stefaninifood.model.dto.ProdutoDetalharDTO;
 import br.com.stefaninifood.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,11 @@ public class ProdutoController {
     @GetMapping()
     public ResponseEntity<List<?>> getAll(@RequestParam(required = false) String nome) {
         return service.getAllProdutos(nome);
+    }
+
+    @GetMapping("/detalhar/{id}")
+    public ResponseEntity<ProdutoDetalharDTO> getById(@PathVariable int id) {
+        return service.getProdutoById(id);
     }
 
     @PostMapping

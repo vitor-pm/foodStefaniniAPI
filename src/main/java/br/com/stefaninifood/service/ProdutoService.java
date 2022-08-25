@@ -1,6 +1,7 @@
 package br.com.stefaninifood.service;
 
 import br.com.stefaninifood.model.Produto;
+import br.com.stefaninifood.model.dto.ProdutoDetalharDTO;
 import br.com.stefaninifood.model.dto.ProdutoDto;
 import br.com.stefaninifood.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,15 @@ public class ProdutoService {
         repository.findByNomeContaining(nome).forEach(p -> produtos.add(new ProdutoDto(p)));
 
         return ResponseEntity.ok(repository.findByNomeContaining(nome));
+    }
+
+    public ResponseEntity<ProdutoDetalharDTO> getProdutoById(int id) {
+        Optional<Produto> produto = repository.findById(id);
+        if (produto.isPresent()) {
+            ProdutoDetalharDTO detalhar = new ProdutoDetalharDTO(produto.get());
+            return ResponseEntity.ok().body(detalhar);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     public ResponseEntity<Produto> insertProduto(Produto produto) {

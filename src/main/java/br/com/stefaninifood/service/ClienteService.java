@@ -23,6 +23,11 @@ public class ClienteService {
         return ResponseEntity.ok(repository.findByNomeContaining(nome));
     }
 
+    public ResponseEntity<Cliente> getClienteById(int id) {
+        Optional<Cliente> cliente = repository.findById(id);
+        return cliente.map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
     public ResponseEntity<Cliente> insertCliente(Cliente cliente) {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(cliente));
     }
