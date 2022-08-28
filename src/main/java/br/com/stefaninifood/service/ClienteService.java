@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,7 +19,6 @@ public class ClienteService {
     private ClienteRepository repository;
 
     public ResponseEntity<Page<Cliente>> getAllClientes(String nome, Pageable paginacao) {
-        System.out.println(paginacao);
         if (nome == null) {
             return ResponseEntity.ok(repository.findAll(paginacao));
         }
@@ -31,6 +31,8 @@ public class ClienteService {
     }
 
     public ResponseEntity<Cliente> insertCliente(Cliente cliente) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        cliente.setSenha(encoder.encode(cliente.getSenha()));
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(cliente));
     }
 

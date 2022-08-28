@@ -22,7 +22,6 @@ public class ClienteController {
     @Cacheable(value = "listaClientes")
     public ResponseEntity<Page<Cliente>> getAll(@RequestParam(required = false) String nome,
                                                 Pageable paginacao) {
-        System.out.println(paginacao);
         return service.getAllClientes(nome, paginacao);
     }
 

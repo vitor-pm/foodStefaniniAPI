@@ -41,7 +41,6 @@ public class ValidationHandler {
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     public List<FormErrorDto> handle(ConstraintViolationException exception) {
-        System.out.println("Chegou");
         List<FormErrorDto> erros = new ArrayList<>();
 
         Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
